@@ -10,6 +10,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CircularProgress } from '@mui/material';
 import { ToastProvider } from 'react-toast-notifications';
+import { BrowserRouter } from 'react-router-dom';
 
 const Loading = () => {
   return (
@@ -26,8 +27,10 @@ root.render(
     <ToastProvider placement="bottom-right" autoDismiss autoDismissTimeout={3000}>
       <ThemeProvider theme={theme} >
         <Suspense fallback={<Loading />}>
-          <CssBaseline />
-          <App />
+          <BrowserRouter>
+            <CssBaseline />
+            <App />
+            </BrowserRouter>
         </Suspense>
       </ThemeProvider>
     </ToastProvider>

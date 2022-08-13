@@ -1,4 +1,4 @@
-const baseURL='https://gorest.co.in/'
+const baseURL='https://gorest.co.in'
 const accessToken ='d4fec7c545d308ae6e29bac798dc383f7e20d9f83fe4faca597730bcab0d6b1d'
 
 export const getUrl = async (url)=>{
@@ -6,6 +6,7 @@ export const getUrl = async (url)=>{
 
     const response = await fetch(`${baseURL}${url}`);
     const json = await response.json();
+    console.log("response api", response)
     result=json;
 
     return result;

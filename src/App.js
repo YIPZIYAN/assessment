@@ -1,23 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import UserListing from './pages/UserListing';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import UserPostListing from './pages/UserPostListing';
+import { Button, Link } from '@mui/material';
+import CreatePost from './pages/CreatePost';
+
+const routes = [
+  {
+    path: "/users",
+    component: <UserListing />,
+    title: 'users,'
+  },
+  {
+    path: "/users/:id/posts",
+    component:<UserPostListing />,
+    title: 'user-post',
+  },
+  {
+    path: "/create-post",
+    component:<CreatePost />,
+    title: 'create-post',
+  }
+];
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Link  href="/users">
+        <Button>
+          User
+        </Button>
+        </Link>
+        <Routes>
+        {
+          routes.map((route,routeIndex)=>{
+            return (
+              <Route key={routeIndex}  path={route.path} element={route.component} />
+            )
+          })
+        }
+        </Routes>
     </div>
   );
 }
