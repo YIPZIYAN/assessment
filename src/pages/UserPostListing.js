@@ -1,44 +1,38 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { getUrl } from '../api/apiAction';
 import { useToasts } from 'react-toast-notifications';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import CommentIcon from '@mui/icons-material/Comment';
 import TableListing from '../components/TableListing';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Typography, Button, Link } from '@mui/material';
+import Box from '@mui/material/Box';
 
 function UserPostListing() {
   const [users, setUsers] = useState([]);
   const { addToast } = useToasts();
   const [tableLoading, setTableLoading] = useState(false);
   const navigate = useNavigate();
-  let {id} =useParams();
+  let { id } = useParams();
 
   const columns = useMemo(() => ([
     {
-      field: 'name',
-      headerName: `name`,
+      field: 'id',
+      headerName: `Post Id`,
       flex: 1,
       align: 'center',
       headerAlign: 'center',
     },
     {
-      field: 'gender',
-      headerName: `gender`,
+      field: 'title',
+      headerName: `Title`,
       flex: 1,
       align: 'center',
       headerAlign: 'center',
     },
     {
-      field: 'email',
-      headerName: `email`,
-      flex: 1,
-      align: 'center',
-      headerAlign: 'center',
-    },
-    {
-      field: 'status',
-      headerName: `status`,
+      field: 'body',
+      headerName: `Body`,
       flex: 1,
       align: 'center',
       headerAlign: 'center',
@@ -52,8 +46,8 @@ function UserPostListing() {
       headerAlign: 'center',
       getActions: (params) => [
         <GridActionsCellItem
-          icon={<VisibilityIcon size={25} />}
-          label="View"
+          icon={<CommentIcon size={25} />}
+          label="Comment"
           onClick={() => navigateToEdit(params.id)}
         />
       ]
@@ -62,16 +56,21 @@ function UserPostListing() {
   ]), []);
 
   const navigateToEdit = useCallback(id => {
-    navigate(`/users/${id}/posts`);
+    navigate(`/posts/${id}/comments`);
+  }, [navigate]);
+
+  const passid = useCallback(id => {
+    navigate(`/create-post/${id}`);
   }, [navigate]);
 
 
   useEffect(() => {
     setTableLoading(true);
     getUrl(`/public/v2/users/${id}/posts`).then(response => {
-      setTableLoading(false);
+      
       console.log("get user Post", response)
       setUsers(response);
+      setTableLoading(false);
     }).catch((error) => {
       setTableLoading(false);
       addToast(JSON.stringify(error), { appearance: 'error' })
@@ -81,13 +80,26 @@ function UserPostListing() {
 
 
   return (
-      <>
-          <Typography>Posts</Typography>
-          <Link href="/create-post">
-              <Button>Create</Button>
-          </Link>
-          <TableListing data={users} isLoading={tableLoading} columns={columns} />
-      </>
+    <>
+      <Typography style={{ fontWeight: "bold", fontSize: "20px", textAlign: "center" }}>Post</Typography>
+      <Typography style={{ textAlign: "left" }} m={2}>User ID:{id}</Typography>
+      <Box
+        m={2}
+        display="flex"
+        justifyContent="flex-end"
+        alignItems="flex-end"
+      >
+        <Link 
+        underline="none" 
+        href={`/create-post/${id}`}
+        >
+          <Button color='primary' variant="outlined">Create Post</Button>
+        </Link>
+      </Box>
+
+
+      <TableListing data={users} isLoading={tableLoading} columns={columns} />
+    </>
   );
 };
 

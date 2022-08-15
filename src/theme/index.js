@@ -4,7 +4,7 @@ import { green, red } from '@mui/material/colors';
 let theme = createTheme({
     palette: {
         primary: {
-            main: '#5E4536',
+            main: '#4864d4',
             secondary:'#8d806f',
             background: "#e1cec2",
         },
